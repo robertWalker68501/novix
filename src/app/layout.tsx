@@ -34,8 +34,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className={`${inter.variable} ${plexMono.variable} antialiased`}>
-        <Providers>{children}</Providers>
-        <Toaster richColors />
+        <Providers>
+          {children}
+          <Toaster richColors />
+        </Providers>
       </body>
     </html>
   );

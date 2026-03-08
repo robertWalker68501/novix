@@ -20,11 +20,8 @@ const UnauthenticatedView = () => {
             <ShieldAlertIcon />
           </ItemMedia>
           <ItemContent>
-            <ItemTitle>Unauthorized Access</ItemTitle>
-            <ItemDescription>
-              You are not authorized to access this resource. Please sign in to
-              continue.
-            </ItemDescription>
+            <ItemTitle>Sign in required</ItemTitle>
+            <ItemDescription>Please sign in to continue.</ItemDescription>
           </ItemContent>
           <ItemActions>
             <SignInButton>

@@ -7,6 +7,12 @@ export const create = mutation({
     name: v.string(),
   },
   handler: async (ctx, args) => {
+    const name = args.name.trim();
+
+    if (!name) {
+      throw new Error('Project name is required');
+    }
+
     const identity = await ctx.auth.getUserIdentity();
 
     if (!identity) {
@@ -14,7 +20,7 @@ export const create = mutation({
     }
 
     await ctx.db.insert('projects', {
-      name: args.name,
+      name: name,
       ownerId: identity?.subject,
     });
   },
