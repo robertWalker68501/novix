@@ -2,9 +2,14 @@
 
 import { useState } from 'react';
 
+import { useAuth } from '@clerk/nextjs';
+import * as Sentry from '@sentry/nextjs';
+
 import { Button } from '@/components/ui/button';
 
 const DemoPage = () => {
+  const { userId } = useAuth();
+
   const [blockingLoading, setBlockingLoading] = useState(false);
   const [backgroundLoading, setBackgroundLoading] = useState(false);
 
@@ -18,6 +23,24 @@ const DemoPage = () => {
     setBackgroundLoading(true);
     await fetch('/api/demo/background', { method: 'POST' });
     setBackgroundLoading(false);
+  };
+
+  // Handle client-side errors
+  const handleClientError = () => {
+    Sentry.logger.info('User attempting to click on client function', {
+      userId,
+    });
+    throw new Error('Something went wrong in the browser!');
+  };
+
+  // Handle API errors
+  const handleApiError = async () => {
+    await fetch('/api/demo/error', { method: 'POST' });
+  };
+
+  // Handle Inngest errors
+  const handleInngestError = async () => {
+    await fetch('/api/demo/inngest-error', { method: 'POST' });
   };
 
   return (
@@ -34,6 +57,27 @@ const DemoPage = () => {
         onClick={handleBackground}
       >
         {backgroundLoading ? 'Loading...' : 'Background'}
+      </Button>
+
+      <Button
+        variant='destructive'
+        onClick={handleClientError}
+      >
+        Client Error
+      </Button>
+
+      <Button
+        variant='destructive'
+        onClick={handleApiError}
+      >
+        API Error
+      </Button>
+
+      <Button
+        variant='destructive'
+        onClick={handleInngestError}
+      >
+        Inngest Error
       </Button>
     </div>
   );
